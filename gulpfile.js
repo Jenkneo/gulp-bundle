@@ -15,34 +15,27 @@ const fileIncludeSettings = {
   basepath: '@file'
 }
 
-const plumberHtmlConfig = {
-  errorHandler: notify.onError({
-    title: 'HTML',
+const plumberNotify = (title) => {
+  return {errorHandler: notify.onError({
+    title: title,
     message: 'Error <%= error.message%>',
     sound: false
-  })
+    })
+  }
 }
 
 gulp.task('html', function(){
   return gulp
     .src('./src/*.html') // какие файлы использовать
-    .pipe(plumber(plumberHtmlConfig))
+    .pipe(plumber(plumberNotify('HTML')))
     .pipe(fileInclude(fileIncludeSettings))
     .pipe(gulp.dest('./dist/')); // куда сохранять
 });
 
-const plumberSassConfig = {
-  errorHandler: notify.onError({
-    title: 'Styles',
-    message: 'Error <%= error.message%>',
-    sound: false
-  })
-}
-
 gulp.task('sass', function(){
   return gulp
   .src('./src/scss/*.scss')
-  .pipe(plumber(plumberSassConfig))
+  .pipe(plumber(plumberNotify('SCSS')))
   .pipe(sourceMaps.init())
   .pipe(sass())
   // .pipe(groupMedia) // use for production
