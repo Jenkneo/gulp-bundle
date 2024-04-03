@@ -8,6 +8,7 @@ const sourceMaps = require('gulp-sourcemaps')
 // const groupMedia = require('gulp-group-css-media-queries') // use for production
 const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
+const webpack = require('webpack-stream')
 
 
 const fileIncludeSettings = {
@@ -42,6 +43,14 @@ gulp.task('sass', function(){
   .pipe(sourceMaps.write())
   .pipe(gulp.dest('./dist/css/'));
 });
+
+gulp.task('js', function(){
+  return gulp
+    .src('./src/js/*.js')
+    .pipe(plumber(plumberNotify('JS')))
+    .pipe(webpack(require('./webpack.config')))
+    .pipe(gulp.dest('./dist/js'))
+})
 
 gulp.task('images', function(){
   return gulp
@@ -87,10 +96,11 @@ gulp.task('watch', function(){
   gulp.watch('./src/img/**/*', gulp.parallel('images'));
   gulp.watch('./src/fonts/**/*', gulp.parallel('fonts'));
   gulp.watch('./src/files/**/*', gulp.parallel('files'));
+  gulp.watch('./src/js/**/*', gulp.parallel('js'));
 })
 
 gulp.task('default', gulp.series(
   'clean', 
-  gulp.parallel('html', 'sass', 'images', 'fonts', 'files'),
+  gulp.parallel('html', 'sass', 'images', 'fonts', 'files', 'js'),
   gulp.parallel('server', 'watch')  
 ));
