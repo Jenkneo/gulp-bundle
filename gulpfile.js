@@ -9,6 +9,8 @@ const sourceMaps = require('gulp-sourcemaps')
 const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
 const webpack = require('webpack-stream')
+const babel = require('gulp-babel')
+const imagemin = require('gulp-imagemin')
 
 
 const fileIncludeSettings = {
@@ -48,6 +50,7 @@ gulp.task('js', function(){
   return gulp
     .src('./src/js/*.js')
     .pipe(plumber(plumberNotify('JS')))
+    .pipe(babel())
     .pipe(webpack(require('./webpack.config')))
     .pipe(gulp.dest('./dist/js'))
 })
@@ -55,6 +58,7 @@ gulp.task('js', function(){
 gulp.task('images', function(){
   return gulp
   .src('./src/img/**/*')
+  .pipe(imagemin({verbose: true}))
   .pipe(gulp.dest('./dist/img/'));
 });
 

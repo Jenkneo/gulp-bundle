@@ -1,4 +1,4 @@
-# online-shop
+# Gulp bundle
 
 # Gulp modules
 - gulp-sass - Сборка SASS / SCSS
