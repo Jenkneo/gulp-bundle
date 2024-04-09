@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const fileInclude = require('gulp-file-include');
 const sass = require('gulp-sass')(require('sass'));
+const sassGlob = require('gulp-sass-glob');
 const server = require('gulp-server-livereload');
 const clean = require('gulp-clean');
 const fs = require('fs');
@@ -11,6 +12,7 @@ const notify = require('gulp-notify')
 const webpack = require('webpack-stream')
 const babel = require('gulp-babel')
 const imagemin = require('gulp-imagemin')
+const changed = require('gulp-changed')
 
 
 const fileIncludeSettings = {
@@ -29,7 +31,8 @@ const plumberNotify = (title) => {
 
 gulp.task('html', function(){
   return gulp
-    .src('./src/*.html') // какие файлы использовать
+    .src(['./src/html/**/*.html', '!./src/html/blocks/*.html']) // какие файлы использовать
+    .pipe(changed('./dist/'))
     .pipe(plumber(plumberNotify('HTML')))
     .pipe(fileInclude(fileIncludeSettings))
     .pipe(gulp.dest('./dist/')); // куда сохранять
@@ -38,8 +41,10 @@ gulp.task('html', function(){
 gulp.task('sass', function(){
   return gulp
   .src('./src/scss/*.scss')
+  .pipe(changed('./dist/css/'))
   .pipe(plumber(plumberNotify('SCSS')))
   .pipe(sourceMaps.init())
+  .pipe(sassGlob())
   .pipe(sass())
   // .pipe(groupMedia) // use for production
   .pipe(sourceMaps.write())
@@ -49,6 +54,7 @@ gulp.task('sass', function(){
 gulp.task('js', function(){
   return gulp
     .src('./src/js/*.js')
+    .pipe(changed('./dist/js/'))
     .pipe(plumber(plumberNotify('JS')))
     .pipe(babel())
     .pipe(webpack(require('./webpack.config')))
@@ -57,20 +63,23 @@ gulp.task('js', function(){
 
 gulp.task('images', function(){
   return gulp
-  .src('./src/img/**/*')
-  .pipe(imagemin({verbose: true}))
-  .pipe(gulp.dest('./dist/img/'));
+    .src('./src/img/**/*')
+    .pipe(changed('./dist/img/'))
+    .pipe(imagemin({verbose: true}))
+    .pipe(gulp.dest('./dist/img/'));
 });
 
 gulp.task('fonts', function(){
   return gulp
-  .src('./src/fonts/**/*')
-  .pipe(gulp.dest('./dist/fonts/'));
+    .src('./src/fonts/**/*')
+    .pipe(changed('./dist/fonts/'))
+    .pipe(gulp.dest('./dist/fonts/'));
 });
 
 gulp.task('files', function(){
   return gulp
   .src('./src/files/**/*')
+  .pipe(changed('./dist/files/'))
   .pipe(gulp.dest('./dist/files/'));
 });
 
