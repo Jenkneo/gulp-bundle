@@ -1,17 +1,23 @@
 const gulp = require('gulp');
 const fileInclude = require('gulp-file-include');
+const htmlclean = require('gulp-htmlclean');
+const webpHTML = require('gulp-webp-html');
 const sass = require('gulp-sass')(require('sass'));
 const sassGlob = require('gulp-sass-glob');
+const autoprefixer = require('gulp-autoprefixer');
+const csso = require('gulp-csso');
+const webpCSS = require('gulp-webp-css')
 const server = require('gulp-server-livereload');
 const clean = require('gulp-clean');
 const fs = require('fs');
 const sourceMaps = require('gulp-sourcemaps')
-const groupMedia = require('gulp-group-css-media-queries') // use for production
+const groupMedia = require('gulp-group-css-media-queries')
 const plumber = require('gulp-plumber')
 const notify = require('gulp-notify')
 const webpack = require('webpack-stream')
 const babel = require('gulp-babel')
 const imagemin = require('gulp-imagemin')
+const webp = require('gulp-webp');
 const changed = require('gulp-changed')
 
 
@@ -35,6 +41,8 @@ gulp.task('html:docs', function(){
     .pipe(changed('./docs/'))
     .pipe(plumber(plumberNotify('HTML')))
     .pipe(fileInclude(fileIncludeSettings))
+    .pipe(webpHTML())
+    .pipe(htmlclean())
     .pipe(gulp.dest('./docs/')); // куда сохранять
 });
 
@@ -44,9 +52,12 @@ gulp.task('sass:docs', function(){
   .pipe(changed('./docs/css/'))
   .pipe(plumber(plumberNotify('SCSS')))
   .pipe(sourceMaps.init())
+  .pipe(autoprefixer())
   .pipe(sassGlob())
-  .pipe(groupMedia) // use for production
+  .pipe(webpCSS())
+  .pipe(groupMedia())
   .pipe(sass())
+  .pipe(csso())
   .pipe(sourceMaps.write())
   .pipe(gulp.dest('./docs/css/'));
 });
@@ -64,6 +75,11 @@ gulp.task('js:docs', function(){
 gulp.task('images:docs', function(){
   return gulp
     .src('./src/img/**/*')
+    .pipe(changed('./docs/img/'))
+    .pipe(webp())
+    .pipe(gulp.dest('./docs/img/'))
+
+    .pipe(gulp.src('./src/img/**/*'))
     .pipe(changed('./docs/img/'))
     .pipe(imagemin({verbose: true}))
     .pipe(gulp.dest('./docs/img/'));
@@ -101,13 +117,4 @@ gulp.task ('clean:docs', function(done){
     .pipe(clean({ force: true }));
   }
   done();
-})
-
-gulp.task('watch:docs', function(){
-  gulp.watch('./src/scss/**/*.scss', gulp.parallel('sass:docs'));
-  gulp.watch('./src/**/*.html', gulp.parallel('html:docs'));
-  gulp.watch('./src/img/**/*', gulp.parallel('images:docs'));
-  gulp.watch('./src/fonts/**/*', gulp.parallel('fonts:docs'));
-  gulp.watch('./src/files/**/*', gulp.parallel('files:docs'));
-  gulp.watch('./src/js/**/*', gulp.parallel('js:docs'));
 })

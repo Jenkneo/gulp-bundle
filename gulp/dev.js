@@ -5,14 +5,14 @@ const sassGlob = require('gulp-sass-glob');
 const server = require('gulp-server-livereload');
 const clean = require('gulp-clean');
 const fs = require('fs');
-const sourceMaps = require('gulp-sourcemaps')
-const plumber = require('gulp-plumber')
-const notify = require('gulp-notify')
-const webpack = require('webpack-stream')
-const babel = require('gulp-babel')
-const imagemin = require('gulp-imagemin')
-const changed = require('gulp-changed')
+const sourceMaps = require('gulp-sourcemaps');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
+const webpack = require('webpack-stream');
+const babel = require('gulp-babel');
+const changed = require('gulp-changed');
 
+const imagemin = require('gulp-imagemin');
 
 const fileIncludeSettings = {
   prefix: '@@', // указывает на то, как импортировать файлы
@@ -31,14 +31,14 @@ const plumberNotify = (title) => {
 gulp.task('html:dev', function(){
   return gulp
     .src(['./src/html/**/*.html', '!./src/html/blocks/*.html']) // какие файлы использовать
-    .pipe(changed('./build/'))
+    .pipe(changed('./build/', {hasChanged: changed.compareContents}))
     .pipe(plumber(plumberNotify('HTML')))
     .pipe(fileInclude(fileIncludeSettings))
     .pipe(gulp.dest('./build/')); // куда сохранять
 });
 
 gulp.task('sass:dev', function(){
-  return gulp
+return gulp
   .src('./src/scss/*.scss')
   .pipe(changed('./build/css/'))
   .pipe(plumber(plumberNotify('SCSS')))
@@ -54,7 +54,7 @@ gulp.task('js:dev', function(){
     .src('./src/js/*.js')
     .pipe(changed('./build/js/'))
     .pipe(plumber(plumberNotify('JS')))
-    // .pipe(babel())
+    .pipe(babel())
     .pipe(webpack(require('./../webpack.config')))
     .pipe(gulp.dest('./build/js'))
 })
@@ -63,7 +63,7 @@ gulp.task('images:dev', function(){
   return gulp
     .src('./src/img/**/*')
     .pipe(changed('./build/img/'))
-    // .pipe(imagemin({verbose: true}))
+    .pipe(imagemin({verbose: true}))
     .pipe(gulp.dest('./build/img/'));
 });
 
