@@ -1,10 +1,16 @@
 /* Base */
-@import "./base/reset";
-@import "./base/vars";
-@import "./base/base";
-@import "./base/utils";
-@import "./base/containers";
-@import "./base/sticky-footer";
+@import './base/reset';
+@import './base/vars';
+@import './base/mixins';
+@import './base/fontsAutoGen';
+@import './base/base';
+@import './base/docs'; /* Отключить при необходимости */
+@import './base/utils';
+@import './base/containers';
+@import './base/sticky-footer';
 
 /* Blocks */
-@import "./blocks/*.scss";
+@import './blocks/*.scss';
+
+/* No styles code below. Only in modules */
+/* Не пишите CSS код ниже. Только в подключаемых файлах */

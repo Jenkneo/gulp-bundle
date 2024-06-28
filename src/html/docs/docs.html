@@ -1,0 +1,42 @@
+<main class="docs">
+	<section>
+		<div class="container">
+			<h1 class="title-1">Документация</h1>
+			<p>Документация и возможности сборки и стартового шаблона</p>
+
+			<p>
+				Запуск в режиме разработки: <code>gulp</code><br>
+				Сборка оптимизированной версии для продакшена: <code>gulp docs</code>
+			</p>
+
+			<h3 class="title-3">Возможности стартового шаблона</h3>
+			<ul>
+				<li>Готовые стили для CSS контейнеров на все случаи жизни.</li>
+				<li>Миксины и сниппеты для адаптива.</li>
+				<li>Миксин и сниппет для CSS retina фоновых изображений.</li>
+			</ul>
+
+			<h3 class="title-3">Возможности сборки</h3>
+
+			<ul>
+				<li>Автоисправление путей. Смело используйте подсказки редактора при указании пути к файлу.
+					Сборка сама удалит лишние поднятия на уровень вверх <code>../../</code> в src HTML и
+					background-image в SCSS.</li>
+				<li>Автоматическая генерация SVG спрайтов. Подробнее см. ниже.</li>
+			</ul>
+
+			<h3 class="title-3">Особенности сборки для продакшена gulp docs</h3>
+			<ul>
+				<li>Автоматическое сжатие jpg изображений</li>
+				<li>Автоматическая генерация webp графики и указания webp формата в HTML.</li>
+			</ul>
+
+		</div>
+	</section>
+	@@include('fonts.html')
+	@@include('snippets.html')
+	@@include('svgsprite.html')
+	@@include('gulp-file-include.html')
+	@@include('typo.html')
+	@@include('containers.html')
+</main>

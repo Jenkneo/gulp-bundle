@@ -2,12 +2,15 @@
 	--container-width: 1200px;
 	--container-padding: 15px;
 
-	--font-main: 'Poppins', sans-serif;
-	--font-accent: 'Playfair Display', serif;
+	--font-main: sans-serif;
+	--font-accent: 'Manrope', sans-serif;
+	--font-titles: var(--font-accent);
 
 	--page-bg: #fff;
 	--text-color: #000;
 	--accent: #ac182c;
+	--link-color: #2578c8;
+
 
     --laptop-size: 1199px;
 	--tablet-size: 959px;

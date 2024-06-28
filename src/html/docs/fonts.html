@@ -1,0 +1,21 @@
+<section>
+	<div class="container">
+		<h2 class="title-2">Автогенерация шрифтов и CSS подключения</h2>
+
+		<ol>
+			<li>Размещаем TTF и OTF шрифты в <code>src/fonts/</code></li>
+			<li>При запуске сборки OTF конвертируется в TTF внутри <code>src/fonts/</code>.</li>
+			<li>Затем TTF в WOFF и WOFF2 из <code>src/fonts/</code> в <code>build/fonts/</code>.</li>
+			<li>Генерируются CSS стили подключения внутри <code>src/scss/base/_fontsAutoGen.scss</code>.<br> Важно! Этот
+				файл генерируется и перезаписывается автоматически.</li>
+		</ol>
+
+		<p>
+			Пример:
+		</p>
+
+		<p class="font-1">Hello, world! Привет, мир!</p>
+		<p class="font-2">Hello, world! Привет, мир!</p>
+
+	</div>
+</section>
